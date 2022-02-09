@@ -1,4 +1,4 @@
-package com.mloegel.demo
+package com.mloegel.supload
 
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
