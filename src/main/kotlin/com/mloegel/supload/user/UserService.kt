@@ -11,4 +11,6 @@ class UserService(val db: UserRepository) {
     fun findByUserid(userid: Int): User = db.findByUserid(userid)
 
     fun findByUsername(username:String): User = db.findByUsername(username)
+
+    fun searchForUsername(username: String): List<User> = db.findByUsernameContainingIgnoreCase(username)
 }

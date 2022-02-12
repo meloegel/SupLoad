@@ -12,4 +12,7 @@ class UserController(val service: UserService) {
 
     @GetMapping("/user/username/{username}")
     fun getByUsername(@PathVariable username: String): User = service.findByUsername(username)
+
+    @GetMapping("/user/search/{username}")
+    fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
 }
