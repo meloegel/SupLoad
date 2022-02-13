@@ -4,6 +4,12 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.RequestBody
+
+data class Login(
+    val username: String,
+    val password: String
+)
 
 class UserController(val service: UserService) {
     @GetMapping("/users")
@@ -25,6 +31,11 @@ class UserController(val service: UserService) {
         }catch (ex: EmptyResultDataAccessException) {
             throw Exception("user with username $username not found!")
         }
+    }
+
+    @GetMapping("/login")
+    fun login(@RequestBody loginInfo: Login): String {
+        return service.login(loginInfo.username, loginInfo.password)
     }
 
     @GetMapping("/user/search/{username}")
