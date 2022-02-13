@@ -10,10 +10,22 @@ class UserController(val service: UserService) {
     fun getAllUsers(): MutableIterable<User> = service.findUsers()
 
     @GetMapping("/user/{userid}")
-    fun getUserByUserid(@PathVariable userid: Int): User = service.findByUserid(userid)
+    fun getUserByUserid(@PathVariable userid: Int): User {
+        try {
+            return service.findByUserid(userid)
+        }catch (ex: EmptyResultDataAccessException) {
+            throw Exception("user with id $userid not found!")
+        }
+    }
 
     @GetMapping("/user/username/{username}")
-    fun getByUsername(@PathVariable username: String): User = service.findByUsername(username)
+    fun getByUsername(@PathVariable username: String): User {
+        try {
+            return service.findByUsername(username)
+        }catch (ex: EmptyResultDataAccessException) {
+            throw Exception("user with username $username not found!")
+        }
+    }
 
     @GetMapping("/user/search/{username}")
     fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
