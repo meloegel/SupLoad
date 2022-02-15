@@ -1,17 +1,15 @@
 package com.mloegel.supload.user
 
 import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.*
 
 data class Login(
     val username: String,
     val password: String
 )
 
-class UserController(val service: UserService) {
+@RestController
+class UserController(private val service: UserService) {
     @GetMapping("/users")
     fun getAllUsers(): MutableIterable<User> = service.findUsers()
 
@@ -40,6 +38,15 @@ class UserController(val service: UserService) {
 
     @GetMapping("/user/search/{username}")
     fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
+
+    @PostMapping("/user")
+    fun postUser(@RequestBody user: User) = service.postUser(user)
+
+    @PutMapping("/user/{userid}")
+    fun updateUser(@PathVariable userid: Int, @RequestBody updatedUser: User) {
+        updatedUser.userid = userid
+        service.postUser(updatedUser)
+    }
 
     @DeleteMapping("/user/{userid}")
     fun deleteUser(@PathVariable userid: Int) {
