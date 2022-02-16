@@ -7,7 +7,7 @@ import org.springframework.transaction.annotation.Transactional
 @Transactional
 @Service
 class UserService(val db: UserRepository) {
-    fun findUsers(): MutableIterable<User> = db.findAll()
+    fun findAllUsers(): MutableIterable<User> = db.findAll()
 
     fun findByUserid(userid: Int): User = db.findByUserid(userid)
 

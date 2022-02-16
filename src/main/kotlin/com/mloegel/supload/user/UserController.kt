@@ -11,7 +11,7 @@ data class Login(
 @RestController
 class UserController(private val service: UserService) {
     @GetMapping("/users")
-    fun getAllUsers(): MutableIterable<User> = service.findUsers()
+    fun getAllUsers(): MutableIterable<User> = service.findAllUsers()
 
     @GetMapping("/user/{userid}")
     fun getUserByUserid(@PathVariable userid: Int): User {
@@ -44,8 +44,8 @@ class UserController(private val service: UserService) {
 
     @PutMapping("/user/{userid}")
     fun updateUser(@PathVariable userid: Int, @RequestBody updatedUser: User) {
-        updatedUser.userid = userid
-        service.postUser(updatedUser)
+        val updatedUserCopy = updatedUser.copy(userid = userid)
+        service.postUser(updatedUserCopy)
     }
 
     @DeleteMapping("/user/{userid}")

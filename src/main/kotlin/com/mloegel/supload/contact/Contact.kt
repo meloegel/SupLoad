@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table("CONTACT")
-data class ContactInformation(
+data class Contact(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     val contactid: Int?,
