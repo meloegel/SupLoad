@@ -8,11 +8,27 @@ import javax.persistence.*
 data class ContactInformation(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var contactid: Int?,
+    val contactid: Int?,
 
     @Column(nullable = false)
-    var firstname: String,
+    val firstname: String,
 
     @Column(nullable = false)
-    var lastname: String,
+    val email: String,
+
+    @Column(nullable = false)
+    val lastname: String,
+
+    @Column(nullable = false)
+    val address: Address,
+
+    @Column(nullable = false)
+    val phone: String,
 )
+
+data class Address(
+    val street: String,
+    val city: String,
+    val state: String,
+    val zip: Int,
+        )

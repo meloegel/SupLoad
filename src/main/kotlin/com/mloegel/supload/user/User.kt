@@ -8,15 +8,15 @@ import javax.persistence.*
 data class User(
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    var userid: Int?,
+    val userid: Int?,
 
     @Column(nullable = false, unique = true)
-    var username: String,
+    val username: String,
 
     @Column(nullable = false)
-    var password: String,
+    val password: String,
 
     @Column(nullable = false, unique = true)
-    var email: String
+    val email: String
 
 )
