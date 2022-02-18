@@ -7,4 +7,6 @@ import org.springframework.transaction.annotation.Transactional
 @Service
 class ContactService(val db: ContactRepository) {
     fun findAllContacts(): MutableIterable<Contact> = db.findAll()
+
+    fun findByContactid(contactid: Int): Contact = db.findByContactid(contactid)
 }
