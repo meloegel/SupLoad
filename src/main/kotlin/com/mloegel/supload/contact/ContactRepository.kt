@@ -7,5 +7,5 @@ interface ContactRepository: CrudRepository<Contact, String> {
 
     fun findContactsByFirstname(firstname: String): List<Contact>
 
-
+    fun findContactsByLastname(lastname: String): List<Contact>
 }
