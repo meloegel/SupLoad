@@ -9,4 +9,6 @@ class ContactService(val db: ContactRepository) {
     fun findAllContacts(): MutableIterable<Contact> = db.findAll()
 
     fun findByContactid(contactid: Int): Contact = db.findByContactid(contactid)
+
+    fun findContactsByFirstname(firstname:String): List<Contact> = db.findContactsByFirstname(firstname)
 }

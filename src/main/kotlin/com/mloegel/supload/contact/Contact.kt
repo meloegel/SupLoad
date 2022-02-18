@@ -14,10 +14,10 @@ data class Contact(
     val firstname: String,
 
     @Column(nullable = false)
-    val email: String,
+    val lastname: String,
 
     @Column(nullable = false)
-    val lastname: String,
+    val email: String,
 
     @Column(nullable = false)
     val address: Address,
