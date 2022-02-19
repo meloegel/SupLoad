@@ -30,6 +30,8 @@ dependencies {
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	runtimeOnly("com.h2database:h2")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	testImplementation("com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0")
+	testImplementation("com.marcinziolo:kotlin-wiremock:1.0.2")
 	testImplementation("org.springframework.security:spring-security-test")
 }
 
