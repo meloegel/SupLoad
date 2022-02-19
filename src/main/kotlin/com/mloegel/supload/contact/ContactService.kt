@@ -1,6 +1,7 @@
 package com.mloegel.supload.contact
 
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 
 @Transactional
@@ -10,7 +11,13 @@ class ContactService(val db: ContactRepository) {
 
     fun findByContactid(contactid: Int): Contact = db.findByContactid(contactid)
 
-    fun findContactsByFirstname(firstname:String): List<Contact> = db.findContactsByFirstname(firstname)
+    fun searchContactsByFirstname(firstname:String): List<Contact> = db.findContactsByFirstname(firstname)
 
-    fun findContactsByLastName(lastname: String): List<Contact> = db.findContactsByLastname(lastname)
+    fun searchContactsByLastName(lastname: String): List<Contact> = db.findContactsByLastname(lastname)
+
+    @Transactional
+    fun deleteContact(contact: Contact) = db.delete(contact)
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    fun deleteAll() = db.deleteAll()
 }
