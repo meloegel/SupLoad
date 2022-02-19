@@ -1,10 +1,7 @@
 package com.mloegel.supload.contact
 
 import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ContactController(private val contactService: ContactService) {
@@ -28,6 +25,15 @@ class ContactController(private val contactService: ContactService) {
     @GetMapping("/contact/{lastname}")
     fun searchContactsByLastname(@PathVariable lastname: String): List<Contact> {
         return contactService.searchContactsByLastName(lastname)
+    }
+
+    @PostMapping("/contact")
+    fun postContact(@RequestBody contact: Contact) = contactService.postContact(contact)
+
+    @PutMapping("/contact/{contactid}")
+    fun updateContact(@PathVariable contactid: Int, @RequestBody updatedContact: Contact) {
+        val updatedContactCopy = updatedContact.copy(contactid = contactid)
+        contactService.postContact(updatedContactCopy)
     }
 
     @DeleteMapping("/contact/{contactid}")
