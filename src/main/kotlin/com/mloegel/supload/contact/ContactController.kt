@@ -20,5 +20,13 @@ class ContactController(private val contactService: ContactService) {
     }
 
     @GetMapping("/contact/{firsname}")
-    fun findContactsByFirstname(@PathVariable firstname: String): List<Contact> = contactService.findContactsByFirstname(firstname)
+    fun findContactsByFirstname(@PathVariable firstname: String): List<Contact> {
+        return contactService.findContactsByFirstname(firstname)
+    }
+
+    @GetMapping("/contact/{lastname}")
+    fun findContactsByLastname(@PathVariable lastname: String): List<Contact> {
+        return contactService.findContactsByLastName(lastname)
+    }
+
 }
