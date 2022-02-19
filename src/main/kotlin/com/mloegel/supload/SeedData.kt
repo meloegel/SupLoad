@@ -1,6 +1,7 @@
 package com.mloegel.supload
 
 
+import com.mloegel.supload.contact.ContactService
 import com.mloegel.supload.user.User
 import com.mloegel.supload.user.UserService
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,11 +18,15 @@ class SeedData : CommandLineRunner {
     @Autowired
     var userService: UserService? = null
 
+    @Autowired
+    var contactService: ContactService? = null
+
 
     @Transactional
     @Throws(Exception::class)
     override fun run(args: Array<String?>?) {
         userService?.deleteAll()
+        contactService?.deleteAll()
 
         val u1 = User(1,"admin", "password", "admin@lambdaschool.local")
         userService?.postUser(u1)

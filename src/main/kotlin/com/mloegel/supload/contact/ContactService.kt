@@ -16,6 +16,9 @@ class ContactService(val db: ContactRepository) {
     fun searchContactsByLastName(lastname: String): List<Contact> = db.findContactsByLastname(lastname)
 
     @Transactional
+    fun postContact(contact: Contact) = db.save(contact)
+
+    @Transactional
     fun deleteContact(contact: Contact) = db.delete(contact)
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
