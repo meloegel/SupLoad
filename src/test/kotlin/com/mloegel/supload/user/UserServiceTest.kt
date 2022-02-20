@@ -1,28 +1,32 @@
 package com.mloegel.supload.user
 
 import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import org.mockito.Mockito
+import com.nhaarman.mockitokotlin2.mock
 import org.springframework.beans.factory.annotation.Autowired
 
 internal class UserServiceTest {
-    @Autowired
-    val userServices: UserService? = null
 
-    val mockService = Mockito.mock(UserService::class.java)
+    private val user = User(1,"test", "password", "test@lambdaschool.local")
 
-    val mockRepository = Mockito.mock(UserRepository::class.java)
+    private val mockService = mock<UserService>()
+
+    private val mockRepository = mock<UserRepository>()
+
+    private val userServices = UserService(mockRepository)
 
     @Test
     fun findAllUsers() {
-        userServices?.let { verify(it.findAllUsers()) }
+        userServices.findAllUsers()
+        verify(mockRepository).findAll()
     }
+
+
 
     @Test
     fun findByUserid() {
+        userServices.findByUserid(1)
+        verify(mockRepository).findByUserid(1)
     }
 
     @Test
@@ -39,6 +43,8 @@ internal class UserServiceTest {
 
     @Test
     fun postUser() {
+//        userServices.postUser(user)
+//        verify(mockRepository).save(user)
     }
 
     @Test
