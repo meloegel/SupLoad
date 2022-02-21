@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired
 
 internal class UserServiceTest {
 
-    private val user = User(1,"test", "password", "test@lambdaschool.local")
+    private val user = User(12,"test", "password", "test@lambdaschool.local")
 
     private val mockRepository = mock<UserRepository>()
 
@@ -19,8 +19,6 @@ internal class UserServiceTest {
         userServices.findAllUsers()
         verify(mockRepository).findAll()
     }
-
-
 
     @Test
     fun findByUserid() {
@@ -44,14 +42,6 @@ internal class UserServiceTest {
     fun login() {
         whenever(mockRepository.findByUsername("admin")).thenReturn(User(1,"amdin", "password", "admin@lambdaschool.local"))
         userServices.login("admin", "password")
-    }
-
-    @Test
-    fun postUser() {
-//        userServices.deleteAll()
-//        userServices.postUser(user)
-//        mockRepository.save(user)
-//        verify(mockRepository).findByUserid(1)
     }
 
     @Test
