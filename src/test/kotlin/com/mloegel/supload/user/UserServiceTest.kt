@@ -3,6 +3,7 @@ package com.mloegel.supload.user
 import com.nhaarman.mockitokotlin2.verify
 import org.junit.jupiter.api.Test
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.whenever
 import org.springframework.beans.factory.annotation.Autowired
 
 internal class UserServiceTest {
@@ -41,6 +42,7 @@ internal class UserServiceTest {
 
     @Test
     fun login() {
+        whenever(mockRepository.findByUsername("admin")).thenReturn(User(1,"amdin", "password", "admin@lambdaschool.local"))
         userServices.login("admin", "password")
     }
 
