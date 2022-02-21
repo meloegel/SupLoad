@@ -9,8 +9,6 @@ internal class UserServiceTest {
 
     private val user = User(1,"test", "password", "test@lambdaschool.local")
 
-    private val mockService = mock<UserService>()
-
     private val mockRepository = mock<UserRepository>()
 
     private val userServices = UserService(mockRepository)
@@ -31,27 +29,32 @@ internal class UserServiceTest {
 
     @Test
     fun findByUsername() {
+        userServices.findByUsername("admin")
+        verify(mockRepository).findByUsername("admin")
     }
 
     @Test
     fun searchForUsername() {
+        userServices.searchForUsername("admin")
+        verify(mockRepository).findByUsernameContainingIgnoreCase("admin")
     }
 
     @Test
     fun login() {
+        userServices.login("admin", "password")
     }
 
     @Test
     fun postUser() {
+//        userServices.deleteAll()
 //        userServices.postUser(user)
-//        verify(mockRepository).save(user)
+//        mockRepository.save(user)
+//        verify(mockRepository).findByUserid(1)
     }
 
     @Test
     fun deleteUser() {
-    }
-
-    @Test
-    fun deleteAll() {
+        userServices.deleteUser(user)
+        verify(mockRepository).delete(user)
     }
 }
