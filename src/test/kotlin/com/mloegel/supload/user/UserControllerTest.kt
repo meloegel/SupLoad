@@ -24,6 +24,8 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     @Test
     fun getUserByUserid() {
+        whenever(mockUserService.findByUserid(1)).thenReturn(User(1, "admin", "password", "admin@lambdaschool.local"))
+        webClient.get().uri("/user/1").exchange().expectStatus().isOk
     }
 
     @Test
