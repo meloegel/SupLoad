@@ -1,53 +1,25 @@
 package com.mloegel.supload.user
 
-import org.json.JSONObject
+import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*
-import org.junit.jupiter.api.BeforeAll
-import org.junit.jupiter.api.TestInstance
-import org.junit.jupiter.api.extension.ExtendWith
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.http.MediaType
-import org.springframework.security.test.web.reactive.server.SecurityMockServerConfigurers.csrf
-import org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity
-import org.springframework.test.context.junit.jupiter.SpringExtension
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers
-import org.springframework.test.web.servlet.setup.DefaultMockMvcBuilder
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.web.context.WebApplicationContext
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
+import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.test.web.reactive.server.WebTestClient
 
-@ExtendWith(SpringExtension::class)
-@WebMvcTest(controllers = [UserController::class])
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class UserControllerTest {
 
-    @Autowired
-    private lateinit var context: WebApplicationContext
+@WebFluxTest(UserController::class)
+internal class UserControllerTest(@Autowired private val webClient: WebTestClient) {
 
-    private lateinit var mvc : MockMvc
+    @MockBean
+    private lateinit var mockUserService: UserService
 
-    @BeforeAll
-    fun setup () {
-        mvc = MockMvcBuilders
-            .webAppContextSetup(context)
-            .apply<DefaultMockMvcBuilder>(springSecurity())
-            .build()
-    }
+    private val userList = mutableListOf<User>()
 
     @Test
     fun getAllUsers() {
-//        mvc.perform(
-//            MockMvcRequestBuilders.get("/users")
-//                .with(csrf().asHeader())
-//                .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                .content(JSONObject().toString()))
-//                .andExpect(MockMvcResultMatchers.status().is2xxSuccessful)
-//                .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON))
-//        )
+        whenever(mockUserService.findAllUsers()).thenReturn(userList)
+        webClient.get().uri("/users").exchange().expectStatus().isOk
     }
 
     @Test
@@ -78,3 +50,5 @@ internal class UserControllerTest {
     fun deleteUser() {
     }
 }
+
+
