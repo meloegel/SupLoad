@@ -17,7 +17,7 @@ class UserController(private val service: UserService) {
     fun getUserByUserid(@PathVariable userid: Int): User {
         try {
             return service.findByUserid(userid)
-        }catch (ex: EmptyResultDataAccessException) {
+        } catch (ex: EmptyResultDataAccessException) {
             throw Exception("user with id $userid not found!")
         }
     }
@@ -26,18 +26,18 @@ class UserController(private val service: UserService) {
     fun getByUsername(@PathVariable username: String): User {
         try {
             return service.findByUsername(username)
-        }catch (ex: EmptyResultDataAccessException) {
+        } catch (ex: EmptyResultDataAccessException) {
             throw Exception("user with username $username not found!")
         }
     }
 
-    @GetMapping("/login")
+    @GetMapping("/user/search/{username}")
+    fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
+
+    @PostMapping("/login")
     fun login(@RequestBody loginInfo: Login): String {
         return service.login(loginInfo.username, loginInfo.password)
     }
-
-    @GetMapping("/user/search/{username}")
-    fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
 
     @PostMapping("/user")
     fun postUser(@RequestBody user: User) = service.postUser(user)

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
 import org.springframework.test.web.reactive.server.WebTestClient
+import org.springframework.web.reactive.function.BodyInserters
 
 
 @WebFluxTest(UserController::class)
@@ -15,6 +16,8 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
     private lateinit var mockUserService: UserService
 
     private val userList = mutableListOf<User>()
+
+    private val loginInfo = Login("admin", "password")
 
     @Test
     fun getAllUsers() {
@@ -50,6 +53,12 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
     }
 
     @Test
+    fun searchForUsername() {
+        whenever(mockUserService.searchForUsername("admin")).thenReturn(userList)
+        webClient.get().uri("/user/username/admin").exchange().expectStatus().isOk
+    }
+
+    @Test
     fun login() {
         whenever(mockUserService.login("admin", "password")).thenReturn("Token here")
         whenever(mockUserService.findByUsername("admin")).thenReturn(
@@ -60,16 +69,7 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
                 "email@test.com"
             )
         )
-//        webClient.get().uri("/login").
-//            .body("loginInfo", "admin", "password")
-//
-//            .exchange().expectStatus().isOk
-    }
-
-    @Test
-    fun searchForUsername() {
-        whenever(mockUserService.searchForUsername("admin")).thenReturn(userList)
-        webClient.get().uri("/user/username/admin").exchange().expectStatus().isOk
+        webClient.post().uri("/login").body(BodyInserters.fromValue(loginInfo)).exchange().expectStatus().isOk
     }
 
     @Test
