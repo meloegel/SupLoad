@@ -18,18 +18,35 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     @Test
     fun getAllUsers() {
-        whenever(mockUserService.findAllUsers()).thenReturn(userList)
-        webClient.get().uri("/users").exchange().expectStatus().isOk
+        whenever(mockUserService.findAllUsers())
+            .thenReturn(userList)
+        webClient.get()
+            .uri("/users")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
     fun getUserByUserid() {
-        whenever(mockUserService.findByUserid(1)).thenReturn(User(1, "admin", "password", "admin@lambdaschool.local"))
-        webClient.get().uri("/user/1").exchange().expectStatus().isOk
+        whenever(mockUserService.findByUserid(1))
+            .thenReturn(User(1, "admin", "password", "email@test.com"))
+        webClient.get()
+            .uri("/user/1")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
     fun getByUsername() {
+        whenever(mockUserService.findByUsername("admin")).thenReturn(
+            User(
+                1,
+                "admin",
+                "password",
+                "email@test.com"
+            )
+        )
+        webClient.get().uri("/user/username/admin").exchange().expectStatus().isOk
     }
 
     @Test
