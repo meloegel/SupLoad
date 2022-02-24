@@ -92,6 +92,11 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     @Test
     fun updateUser() {
+        whenever(mockUserService.postUser(newUser)).thenReturn(newUser)
+        webClient.put().uri("/user/50")
+            .body(BodyInserters.fromValue(newUser))
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
