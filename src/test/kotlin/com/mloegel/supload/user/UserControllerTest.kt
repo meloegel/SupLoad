@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest
 import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.test.web.reactive.server.WebTestClient
 import org.springframework.web.reactive.function.BodyInserters
 
@@ -39,6 +40,16 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
             .uri("/user/1")
             .exchange()
             .expectStatus().isOk
+    }
+
+    @Test
+    fun `userid does not exist`() {
+        whenever(mockUserService.findByUserid(123424234))
+            .thenThrow(EmptyResultDataAccessException(1))
+        webClient.get()
+            .uri("/user/123424234")
+            .exchange()
+            .expectStatus().is5xxServerError
     }
 
     @Test
@@ -101,6 +112,10 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     @Test
     fun deleteUser() {
+        whenever(mockUserService.findByUserid(1)).thenReturn(newUser)
+        webClient.delete().uri("/user/50")
+            .exchange()
+            .expectStatus().isOk
     }
 }
 
