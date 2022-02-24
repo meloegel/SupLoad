@@ -19,6 +19,8 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     private val loginInfo = Login("admin", "password")
 
+    private val newUser = User(50, "testUsername", "password", "test@email.com")
+
     @Test
     fun getAllUsers() {
         whenever(mockUserService.findAllUsers())
@@ -49,13 +51,17 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
                 "email@test.com"
             )
         )
-        webClient.get().uri("/user/username/admin").exchange().expectStatus().isOk
+        webClient.get().uri("/user/username/admin")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
     fun searchForUsername() {
         whenever(mockUserService.searchForUsername("admin")).thenReturn(userList)
-        webClient.get().uri("/user/username/admin").exchange().expectStatus().isOk
+        webClient.get().uri("/user/username/admin")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
@@ -69,11 +75,19 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
                 "email@test.com"
             )
         )
-        webClient.post().uri("/login").body(BodyInserters.fromValue(loginInfo)).exchange().expectStatus().isOk
+        webClient.post().uri("/login")
+            .body(BodyInserters.fromValue(loginInfo))
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
     fun postUser() {
+        whenever(mockUserService.postUser(newUser)).thenReturn(newUser)
+        webClient.post().uri("/user")
+            .body(BodyInserters.fromValue(newUser))
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test
