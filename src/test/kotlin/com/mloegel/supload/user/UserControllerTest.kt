@@ -20,6 +20,8 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
 
     private val loginInfo = Login("admin", "password")
 
+    private val loginInfoBad = Login("admin", "fart")
+
     private val newUser = User(50, "testUsername", "password", "test@email.com")
 
     @Test
@@ -88,6 +90,23 @@ internal class UserControllerTest(@Autowired private val webClient: WebTestClien
         )
         webClient.post().uri("/login")
             .body(BodyInserters.fromValue(loginInfo))
+            .exchange()
+            .expectStatus().isOk
+    }
+
+    @Test
+    fun `bad password`() {
+        whenever(mockUserService.login("admin", "password")).thenReturn("Username and password did not match")
+        whenever(mockUserService.findByUsername("admin")).thenReturn(
+            User(
+                1,
+                "admin",
+                "password",
+                "email@test.com"
+            )
+        )
+        webClient.post().uri("/login")
+            .body(BodyInserters.fromValue(loginInfoBad))
             .exchange()
             .expectStatus().isOk
     }
