@@ -24,10 +24,14 @@ internal class ContactServiceTest {
 
     @Test
     fun searchContactsByFirstname() {
+        contactService.searchContactsByFirstname("test")
+        verify(mockRepository).findContactsByFirstname("test")
     }
 
     @Test
     fun searchContactsByLastName() {
+        contactService.searchContactsByLastName("test")
+        verify(mockRepository).findContactsByLastname("test")
     }
 
     @Test
