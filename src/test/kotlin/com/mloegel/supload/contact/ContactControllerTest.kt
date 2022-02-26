@@ -43,6 +43,12 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun searchContactsByFirstname() {
+        whenever(mockContactService.searchContactsByFirstname("john"))
+            .thenReturn(contactList)
+        webClient.get()
+            .uri("/contact/first/john")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test

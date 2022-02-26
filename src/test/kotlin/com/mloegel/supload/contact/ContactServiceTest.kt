@@ -28,13 +28,13 @@ internal class ContactServiceTest {
     @Test
     fun searchContactsByFirstname() {
         contactService.searchContactsByFirstname("test")
-        verify(mockRepository).findContactsByFirstname("test")
+        verify(mockRepository).findContactsByFirstnameContainingIgnoreCase("test")
     }
 
     @Test
     fun searchContactsByLastName() {
         contactService.searchContactsByLastName("test")
-        verify(mockRepository).findContactsByLastname("test")
+        verify(mockRepository).findContactsByLastnameContainingIgnoreCase("test")
     }
 
     @Test
