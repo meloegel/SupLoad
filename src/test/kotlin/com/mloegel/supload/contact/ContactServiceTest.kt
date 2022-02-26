@@ -33,7 +33,7 @@ internal class ContactServiceTest {
 
     @Test
     fun searchContactsByLastName() {
-        contactService.searchContactsByLastName("test")
+        contactService.searchContactsByLastname("test")
         verify(mockRepository).findContactsByLastnameContainingIgnoreCase("test")
     }
 

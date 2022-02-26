@@ -53,6 +53,12 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun searchContactsByLastname() {
+        whenever(mockContactService.searchContactsByLastname("test"))
+            .thenReturn(contactList)
+        webClient.get()
+            .uri("/contact/last/test")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test

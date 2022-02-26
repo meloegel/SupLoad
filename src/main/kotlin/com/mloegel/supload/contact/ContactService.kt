@@ -14,7 +14,7 @@ class ContactService(val db: ContactRepository) {
     fun searchContactsByFirstname(firstname: String): List<Contact> =
         db.findContactsByFirstnameContainingIgnoreCase(firstname)
 
-    fun searchContactsByLastName(lastname: String): List<Contact> =
+    fun searchContactsByLastname(lastname: String): List<Contact> =
         db.findContactsByLastnameContainingIgnoreCase(lastname)
 
     @Transactional

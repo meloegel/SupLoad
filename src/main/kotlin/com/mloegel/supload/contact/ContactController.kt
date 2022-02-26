@@ -24,7 +24,7 @@ class ContactController(private val contactService: ContactService) {
 
     @GetMapping("/contact/last/{lastname}")
     fun searchContactsByLastname(@PathVariable lastname: String): List<Contact> {
-        return contactService.searchContactsByLastName(lastname)
+        return contactService.searchContactsByLastname(lastname)
     }
 
     @PostMapping("/contact")
