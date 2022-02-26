@@ -16,6 +16,11 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     private val contactList = mutableListOf<Contact>()
 
+    private val contact = Contact(
+        1, "John", "Test", "test@email.com",
+        Address("123 main st", "test", "test", 55555), "555-555-5555"
+    )
+
     @Test
     fun getAllContacts() {
         whenever(mockContactService.findAllContacts())
@@ -28,6 +33,12 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun getContactById() {
+        whenever(mockContactService.findByContactid(1))
+            .thenReturn(contact)
+        webClient.get()
+            .uri("/contact/1")
+            .exchange()
+            .expectStatus().isOk
     }
 
     @Test

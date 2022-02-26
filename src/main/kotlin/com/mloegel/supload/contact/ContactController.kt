@@ -11,18 +11,18 @@ class ContactController(private val contactService: ContactService) {
     @GetMapping("/contact/{contactid}")
     fun getContactById(@PathVariable contactid: Int): Contact {
         try {
-           return contactService.findByContactid(contactid)
+            return contactService.findByContactid(contactid)
         } catch (ex: EmptyResultDataAccessException) {
             throw Exception("contact with id $contactid not found!")
         }
     }
 
-    @GetMapping("/contact/{firsname}")
+    @GetMapping("/contact/first/{firsname}")
     fun searchContactsByFirstname(@PathVariable firstname: String): List<Contact> {
         return contactService.searchContactsByFirstname(firstname)
     }
 
-    @GetMapping("/contact/{lastname}")
+    @GetMapping("/contact/last/{lastname}")
     fun searchContactsByLastname(@PathVariable lastname: String): List<Contact> {
         return contactService.searchContactsByLastName(lastname)
     }
@@ -41,7 +41,7 @@ class ContactController(private val contactService: ContactService) {
         try {
             val contactToDelete = contactService.findByContactid(contactid)
             contactService.deleteContact(contactToDelete)
-        }catch (exception: EmptyResultDataAccessException) {
+        } catch (exception: EmptyResultDataAccessException) {
             throw Exception("contact with id $contactid not found!")
         }
     }
