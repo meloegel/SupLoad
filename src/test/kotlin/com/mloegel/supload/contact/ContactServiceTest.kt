@@ -18,6 +18,8 @@ internal class ContactServiceTest {
 
     @Test
     fun findByContactid() {
+        contactService.findByContactid(1)
+        verify(mockRepository).findByContactid(1)
     }
 
     @Test
