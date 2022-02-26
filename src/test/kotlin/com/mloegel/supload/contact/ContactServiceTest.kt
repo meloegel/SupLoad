@@ -6,6 +6,9 @@ import org.junit.jupiter.api.Test
 
 internal class ContactServiceTest {
 
+    private val contact =
+        Contact(1, "test", "testerson", "test@email.com", Address("123 main st", "test", "test", 55555), "555-555-5555")
+
     private val mockRepository = mock<ContactRepository>()
 
     private val contactService = ContactService(mockRepository)
@@ -36,9 +39,13 @@ internal class ContactServiceTest {
 
     @Test
     fun postContact() {
+//        contactService.postContact(contact)
+//        verify(mockRepository).save(contact)
     }
 
     @Test
     fun deleteContact() {
+        contactService.deleteContact(contact)
+        verify(mockRepository).delete(contact)
     }
 }

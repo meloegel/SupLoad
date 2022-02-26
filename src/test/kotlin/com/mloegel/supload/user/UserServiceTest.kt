@@ -1,14 +1,13 @@
 package com.mloegel.supload.user
 
-import com.nhaarman.mockitokotlin2.verify
-import org.junit.jupiter.api.Test
 import com.nhaarman.mockitokotlin2.mock
+import com.nhaarman.mockitokotlin2.verify
 import com.nhaarman.mockitokotlin2.whenever
-import org.springframework.beans.factory.annotation.Autowired
+import org.junit.jupiter.api.Test
 
 internal class UserServiceTest {
 
-    private val user = User(12,"test", "password", "test@lambdaschool.local")
+    private val user = User(12, "test", "password", "test@lambdaschool.local")
 
     private val mockRepository = mock<UserRepository>()
 
@@ -40,8 +39,21 @@ internal class UserServiceTest {
 
     @Test
     fun login() {
-        whenever(mockRepository.findByUsername("admin")).thenReturn(User(1,"amdin", "password", "admin@lambdaschool.local"))
+        whenever(mockRepository.findByUsername("admin")).thenReturn(
+            User(
+                1,
+                "amdin",
+                "password",
+                "admin@lambdaschool.local"
+            )
+        )
         userServices.login("admin", "password")
+    }
+
+    @Test
+    fun postUser() {
+//        userServices.postUser(user)
+//        verify(mockRepository).save(user)
     }
 
     @Test
