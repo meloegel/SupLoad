@@ -3,6 +3,14 @@ package com.mloegel.supload.contact
 import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.*
 
+
+data class Address(
+    val street: String,
+    val city: String,
+    val state: String,
+    val zip: Int,
+)
+
 @Entity
 @Table("CONTACT")
 data class Contact(
@@ -19,16 +27,9 @@ data class Contact(
     @Column(nullable = false)
     val email: String,
 
-    @Column(nullable = false)
-    val address: Address,
+//    @Column(nullable = false)
+//    val address: Address,
 
     @Column(nullable = false)
     val phone: String,
 )
-
-data class Address(
-    val street: String,
-    val city: String,
-    val state: String,
-    val zip: Int,
-        )
