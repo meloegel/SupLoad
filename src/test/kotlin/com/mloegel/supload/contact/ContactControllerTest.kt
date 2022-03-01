@@ -19,13 +19,15 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     private val contact = Contact(
         1, "John", "Test", "test@email.com",
-        Address("123 main st", "test", "test", 55555), "555-555-5555"
+        "123 main st", "test", "test", 55555, "555-555-5555"
     )
+
 
     private val newContact = Contact(
         50, "Jeff", "Test", "test@email.com",
-        Address("456 main st", "test", "test", 55555), "555-555-5555"
+        "456 main st", "test", "test", 55555, "555-555-5555"
     )
+
 
     @Test
     fun getAllContacts() {
