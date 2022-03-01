@@ -2,6 +2,7 @@ package com.mloegel.supload.user
 
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -36,7 +37,7 @@ class UserController(private val service: UserService) {
     @GetMapping("/user/search/{username}")
     fun searchForUsername(@PathVariable username: String): List<User> = service.searchForUsername(username)
 
-    @PostMapping("/login")
+    @PostMapping("/login", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun login(@RequestBody loginInfo: Login): ResponseEntity<String> {
         return ResponseEntity<String>(service.login(loginInfo.username, loginInfo.password), HttpStatus.OK)
     }
