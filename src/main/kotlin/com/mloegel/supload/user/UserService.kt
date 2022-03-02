@@ -11,14 +11,14 @@ class UserService(val db: UserRepository) {
 
     fun findByUserid(userid: Int): User = db.findByUserid(userid)
 
-    fun findByUsername(username:String): User = db.findByUsername(username)
+    fun findByUsername(username: String): User = db.findByUsername(username)
 
     fun searchForUsername(username: String): List<User> = db.findByUsernameContainingIgnoreCase(username)
 
     fun login(username: String, password: String): String {
         val userToLogin = db.findByUsername(username)
         return if (username == userToLogin.username && password == userToLogin.password) {
-            "token here"
+            "\"Token Here\""
         } else {
             "Username and password did not match"
         }
