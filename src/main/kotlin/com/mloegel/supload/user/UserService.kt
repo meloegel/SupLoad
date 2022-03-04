@@ -20,7 +20,7 @@ class UserService(val db: UserRepository) {
         return if (username == userToLogin.username && password == userToLogin.password) {
             "\"Token Here\""
         } else {
-            "Username and password did not match"
+            throw IllegalArgumentException("\"Username and password did not match\"")
         }
     }
 

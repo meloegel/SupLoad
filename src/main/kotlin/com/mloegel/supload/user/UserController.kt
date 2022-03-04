@@ -39,7 +39,11 @@ class UserController(private val service: UserService) {
 
     @PostMapping("/login", produces = [MediaType.APPLICATION_JSON_VALUE])
     fun login(@RequestBody loginInfo: Login): ResponseEntity<String> {
-        return ResponseEntity<String>(service.login(loginInfo.username, loginInfo.password), HttpStatus.OK)
+        return try {
+            ResponseEntity<String>(service.login(loginInfo.username, loginInfo.password), HttpStatus.OK)
+        } catch (ex: IllegalArgumentException) {
+            ResponseEntity<String>(HttpStatus.BAD_REQUEST)
+        }
     }
 
     @PostMapping("/user")
