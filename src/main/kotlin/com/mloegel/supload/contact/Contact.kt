@@ -16,7 +16,7 @@ data class Contact(
     @Column(nullable = false)
     val lastname: String,
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     val email: String,
 
     @Column(nullable = false)
