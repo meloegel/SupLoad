@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import com.mloegel.supload.contact.pdf.PdfGenerator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional

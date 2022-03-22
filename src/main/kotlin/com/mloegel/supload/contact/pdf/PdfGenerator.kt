@@ -1,10 +1,10 @@
-package com.mloegel.supload.contact
+package com.mloegel.supload.contact.pdf
 
+import com.mloegel.supload.contact.Contact
 import org.apache.pdfbox.pdmodel.PDDocument
 import org.apache.pdfbox.pdmodel.interactive.form.PDAcroForm
 import org.springframework.util.ResourceUtils
 import java.io.ByteArrayOutputStream
-
 
 class PdfGenerator(private val contact: Contact) {
 
@@ -40,4 +40,3 @@ class PdfGenerator(private val contact: Contact) {
         value.let { acroForm.getField(field).setValue(value) }
     }
 }
-
