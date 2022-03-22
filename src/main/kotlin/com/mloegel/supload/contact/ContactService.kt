@@ -18,11 +18,17 @@ class ContactService(val db: ContactRepository) {
         db.findContactsByLastnameContainingIgnoreCase(lastname)
 
     @Transactional
-    fun postContact(contact: Contact) = db.save(contact)
+    fun postContact(contact: Contact) {
+        val pdfGenerator = PdfGenerator(contact)
+        val contactPdf = pdfGenerator.generate()
+        db.save(contact)
+        println(contactPdf)
+    }
 
     @Transactional
     fun deleteContact(contact: Contact) = db.delete(contact)
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun deleteAll() = db.deleteAll()
+
 }

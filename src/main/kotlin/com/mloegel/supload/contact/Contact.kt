@@ -20,6 +20,9 @@ data class Contact(
     val email: String,
 
     @Column(nullable = false)
+    val phone: String,
+
+    @Column(nullable = false)
     val street: String,
 
     @Column(nullable = false)
@@ -30,7 +33,4 @@ data class Contact(
 
     @Column(nullable = false)
     val zip: Int,
-
-    @Column(nullable = false)
-    val phone: String,
 )
