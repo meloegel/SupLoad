@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream
 class PdfGenerator(private val contact: Contact) {
 
     fun generate(): ByteArrayOutputStream {
-        PDDocument.load(ResourceUtils.getFile("kotlin/com/mloegel/supload/pdf-template/fillableContact.pdf"))
+        PDDocument.load(ResourceUtils.getFile("kotlin/com/mloegel/supload/pdf/pdf-template/fillableContact.pdf"))
             .use { document ->
                 document.documentCatalog.acroForm.apply {
                     fillContact(this, contact)
