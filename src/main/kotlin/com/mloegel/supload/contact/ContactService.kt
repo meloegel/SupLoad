@@ -4,6 +4,9 @@ import com.mloegel.supload.contact.pdf.PdfGenerator
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import kotlin.io.path.createTempFile
+import kotlin.io.path.pathString
+import kotlin.io.path.writeBytes
 
 @Transactional
 @Service
@@ -23,7 +26,11 @@ class ContactService(val db: ContactRepository) {
         val pdfGenerator = PdfGenerator(contact)
         val contactPdf = pdfGenerator.generate()
         db.save(contact)
-        println(contactPdf)
+        val fileName = "test"
+        createTempFile(suffix = "-$fileName").apply {
+            writeBytes(contactPdf.toByteArray())
+            println("file://${this.pathString}")
+        }
     }
 
     @Transactional

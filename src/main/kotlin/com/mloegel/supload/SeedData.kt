@@ -47,14 +47,14 @@ class SeedData : CommandLineRunner {
         val u6 = User(6, "fart", "password", "email@email.com")
         userService?.postUser(u6)
 
-        val c1 = Contact(1, "Bill", "Smith", "bill@email.com", "123 Main St", "Detroit", "MI", 12345, "555-555-5555")
+        val c1 = Contact(1, "Bill", "Smith", "bill@email.com", "123 Main St", "Detroit", "MI", "555-555-55550", 12345)
         contactService?.postContact(c1)
 
         val c2 =
-            Contact(2, "Ted", "Potter", "ted@email.com", "345 Main St", "San Fransisco", "CA", 12345, "555-555-5555")
+            Contact(2, "Ted", "Potter", "ted@email.com", "345 Main St", "San Fransisco", "CA", "555-555-5555", 12345)
         contactService?.postContact(c2)
 
-        val c3 = Contact(3, "Fred", "Johnson", "fred@email.com", "789 Main St", "Chicago", "IL", 12345, "555-555-5555")
+        val c3 = Contact(3, "Fred", "Johnson", "fred@email.com", "789 Main St", "Chicago", "IL", "555-555-5555", 12345)
         contactService?.postContact(c3)
     }
 }
