@@ -30,6 +30,9 @@ class ContactController(private val contactService: ContactService) {
     @PostMapping("/contact")
     fun postContact(@RequestBody contact: Contact) = contactService.postContact(contact)
 
+    @PostMapping("/contact/pdf")
+    fun postContactAndCreatePdf(@RequestBody contact: Contact) = contactService.postContactAndCreatePdf(contact)
+
     @PutMapping("/contact/{contactid}")
     fun updateContact(@PathVariable contactid: Int, @RequestBody updatedContact: Contact) {
         val updatedContactCopy = updatedContact.copy(contactid = contactid)

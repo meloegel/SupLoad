@@ -22,15 +22,20 @@ class ContactService(val db: ContactRepository) {
         db.findContactsByLastnameContainingIgnoreCase(lastname)
 
     @Transactional
-    fun postContact(contact: Contact) {
+    fun postContactAndCreatePdf(contact: Contact) {
         val pdfGenerator = PdfGenerator(contact)
         val contactPdf = pdfGenerator.generate()
         db.save(contact)
-        val fileName = "test"
-        createTempFile(suffix = "-$fileName").apply {
+        createTempFile().apply {
             writeBytes(contactPdf.toByteArray())
             println("file://${this.pathString}")
         }
+        // explorer.exe "file://filePath" to open temp files
+    }
+
+    @Transactional
+    fun postContact(contact: Contact) {
+        db.save(contact)
     }
 
     @Transactional
