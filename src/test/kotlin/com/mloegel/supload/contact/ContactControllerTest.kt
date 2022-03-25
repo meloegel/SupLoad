@@ -19,13 +19,13 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     private val contact = Contact(
         1, "John", "Test", "test@email.com",
-        "123 main st", "test", "test", 55555, "555-555-5555"
+        "123 main st", "test", "test", "555-555-5555", 55555
     )
 
 
     private val newContact = Contact(
         50, "Jeff", "Test", "test@email.com",
-        "456 main st", "test", "test", 55555, "555-555-5555"
+        "456 main st", "test", "test", "555-555-5555", 55555
     )
 
 
@@ -71,8 +71,6 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun postContact() {
-        whenever(mockContactService.postContact(newContact))
-            .thenReturn(newContact)
         webClient.post().uri("/contact")
             .body(BodyInserters.fromValue(newContact))
             .exchange()
@@ -81,8 +79,6 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun updateContact() {
-        whenever(mockContactService.postContact(newContact))
-            .thenReturn(newContact)
         webClient.put().uri("/contact/50")
             .body(BodyInserters.fromValue(newContact))
             .exchange()
@@ -91,8 +87,7 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     @Test
     fun deleteContact() {
-        whenever(mockContactService.findByContactid(50))
-            .thenReturn(newContact)
+        whenever(mockContactService.findByContactid(50)).thenReturn(newContact)
         webClient.delete().uri("/contact/50")
             .exchange()
             .expectStatus().isOk

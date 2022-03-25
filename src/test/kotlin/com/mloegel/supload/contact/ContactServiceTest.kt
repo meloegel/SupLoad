@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 internal class ContactServiceTest {
 
     private val contact =
-        Contact(1, "test", "testerson", "test@email.com", "123 main st", "test", "test", 55555, "555-555-5555")
+        Contact(1, "test", "testerson", "test@email.com", "123 main st", "test", "test", "555-555-5555", 55555)
 
     private val mockRepository = mock<ContactRepository>()
 
