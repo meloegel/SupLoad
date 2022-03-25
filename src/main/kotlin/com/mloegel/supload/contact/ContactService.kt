@@ -1,6 +1,9 @@
 package com.mloegel.supload.contact
 
+import com.mloegel.supload.contact.pdf.ContactUploadParser
 import com.mloegel.supload.contact.pdf.PdfGenerator
+import org.apache.pdfbox.pdmodel.PDDocument
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -10,7 +13,12 @@ import kotlin.io.path.writeBytes
 
 @Transactional
 @Service
-class ContactService(val db: ContactRepository) {
+class ContactService(
+    private val db: ContactRepository,
+    @Autowired val contactUploadParser: ContactUploadParser
+
+) {
+
     fun findAllContacts(): MutableIterable<Contact> = db.findAll()
 
     fun findByContactid(contactid: Int): Contact = db.findByContactid(contactid)
@@ -37,6 +45,11 @@ class ContactService(val db: ContactRepository) {
     fun postContact(contact: Contact) {
         db.save(contact)
     }
+
+    fun uploadContact(contact: PDDocument) {
+        contactUploadParser.parseContact(contact)
+    }
+
 
     @Transactional
     fun deleteContact(contact: Contact) = db.delete(contact)

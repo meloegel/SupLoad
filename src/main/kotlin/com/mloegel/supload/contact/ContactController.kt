@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import org.apache.pdfbox.pdmodel.PDDocument
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.web.bind.annotation.*
 
@@ -38,6 +39,9 @@ class ContactController(private val contactService: ContactService) {
         val updatedContactCopy = updatedContact.copy(contactid = contactid)
         contactService.postContact(updatedContactCopy)
     }
+
+    @PostMapping("/upload/contact")
+    fun uploadContact(@RequestBody contact: PDDocument) = contactService.uploadContact(contact)
 
     @DeleteMapping("/contact/{contactid}")
     fun deleteContact(@PathVariable contactid: Int) {
