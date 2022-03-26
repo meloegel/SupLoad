@@ -2,7 +2,6 @@ package com.mloegel.supload.contact
 
 import kotlinx.coroutines.reactive.awaitFirst
 import org.springframework.dao.EmptyResultDataAccessException
-import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
@@ -44,8 +43,8 @@ class ContactController(private val contactService: ContactService) {
         contactService.postContact(updatedContactCopy)
     }
 
-    @PostMapping("/upload/contact", consumes = [MULTIPART_FORM_DATA_VALUE])
-    suspend fun uploadContact(@RequestPart contact: FilePart) {
+    @PostMapping("/upload/contact")
+    suspend fun uploadContact(@RequestPart("contact") contact: FilePart) {
         contactService.uploadContact(contact.content())
     }
 
