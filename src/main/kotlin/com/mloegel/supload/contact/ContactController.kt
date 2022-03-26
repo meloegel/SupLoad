@@ -1,8 +1,12 @@
 package com.mloegel.supload.contact
 
-import org.apache.pdfbox.pdmodel.PDDocument
+import kotlinx.coroutines.reactive.awaitFirst
 import org.springframework.dao.EmptyResultDataAccessException
+import org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE
+import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
+import reactor.core.publisher.Flux
+import java.io.ByteArrayOutputStream
 
 @RestController
 class ContactController(private val contactService: ContactService) {
@@ -40,8 +44,10 @@ class ContactController(private val contactService: ContactService) {
         contactService.postContact(updatedContactCopy)
     }
 
-    @PostMapping("/upload/contact")
-    fun uploadContact(@RequestBody contact: PDDocument) = contactService.uploadContact(contact)
+    @PostMapping("/upload/contact", consumes = [MULTIPART_FORM_DATA_VALUE])
+    suspend fun uploadContact(@RequestPart contact: FilePart) {
+        contactService.uploadContact(contact.content())
+    }
 
     @DeleteMapping("/contact/{contactid}")
     fun deleteContact(@PathVariable contactid: Int) {
@@ -52,5 +58,17 @@ class ContactController(private val contactService: ContactService) {
             throw Exception("contact with id $contactid not found!")
         }
     }
+
+    suspend fun FilePart.toBytes(): ByteArray {
+        val byteStream = ByteArrayOutputStream()
+        this.content()
+            .flatMap { Flux.just(it.asByteBuffer().array()) }
+            .collectList()
+            .awaitFirst()
+            .forEach { byteStream.write(it) }
+
+        return byteStream.toByteArray()
+    }
+
 
 }

@@ -2,22 +2,28 @@ package com.mloegel.supload.contact
 
 import com.mloegel.supload.contact.pdf.ContactUploadParser
 import com.mloegel.supload.contact.pdf.PdfGenerator
-import org.apache.pdfbox.pdmodel.PDDocument
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.core.io.buffer.DataBuffer
+import org.springframework.core.io.buffer.DataBufferUtils
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import reactor.core.publisher.Flux
+import reactor.core.scheduler.Schedulers
+import java.io.InputStream
+import java.io.PipedInputStream
+import java.io.PipedOutputStream
 import kotlin.io.path.createTempFile
 import kotlin.io.path.pathString
 import kotlin.io.path.writeBytes
+
 
 @Transactional
 @Service
 class ContactService(
     private val db: ContactRepository,
-    @Autowired val contactUploadParser: ContactUploadParser
-
+//    @Autowired val contactUploadParser: ContactUploadParser
 ) {
+    private val contactUploadParser = ContactUploadParser()
 
     fun findAllContacts(): MutableIterable<Contact> = db.findAll()
 
@@ -46,10 +52,10 @@ class ContactService(
         db.save(contact)
     }
 
-    fun uploadContact(contact: PDDocument) {
-        contactUploadParser.parseContact(contact)
+    suspend fun uploadContact(contact: Flux<DataBuffer>) {
+        val foo = getInputStreamFromFluxDataBuffer(contact)
+        contactUploadParser.load(foo)
     }
-
 
     @Transactional
     fun deleteContact(contact: Contact) = db.delete(contact)
@@ -57,4 +63,13 @@ class ContactService(
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun deleteAll() = db.deleteAll()
 
+    private suspend fun getInputStreamFromFluxDataBuffer(data: Flux<DataBuffer>): InputStream {
+        val osPipe = PipedOutputStream()
+        val isPipe = PipedInputStream(osPipe)
+        DataBufferUtils.write(data, osPipe)
+            .subscribeOn(Schedulers.boundedElastic())
+            .doOnComplete { osPipe.close() }
+            .subscribe(DataBufferUtils.releaseConsumer())
+        return isPipe
+    }
 }
