@@ -1,8 +1,5 @@
 package com.mloegel.supload.contact
 
-import kotlinx.coroutines.flow.filterIsInstance
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirst
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.MediaType
@@ -48,9 +45,10 @@ class ContactController(private val contactService: ContactService) {
     }
 
     @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    suspend fun uploadContact(@RequestPart("contact") contact: Flux<FilePart>) {
-        val contactFlow = contact.asFlow().filterIsInstance<FilePart>()
-        contactService.uploadContact(contactFlow.map { it.toBytes() })
+    suspend fun uploadContact(@RequestPart("contact") contact: FilePart) {
+//        val contactFlow = contact.asFlow().filterIsInstance<FilePart>()
+//        contactService.uploadContact(contactFlow.map { it.toBytes() })
+        contactService.uploadContact(contact.toBytes())
     }
 
     @DeleteMapping("/contact/{contactid}")
