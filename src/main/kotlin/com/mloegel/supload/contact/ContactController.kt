@@ -71,6 +71,4 @@ class ContactController(private val contactService: ContactService) {
 
         return byteStream.toByteArray()
     }
-
-
 }

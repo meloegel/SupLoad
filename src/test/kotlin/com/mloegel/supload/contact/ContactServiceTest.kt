@@ -12,7 +12,7 @@ internal class ContactServiceTest {
 
     private val mockRepository = mock<ContactRepository>()
     private val mockContactUploadParser = mock<ContactUploadParser>()
-    private val contactService = ContactService(mockRepository, mockContactUploadParser)
+    private val contactService = ContactService(mockRepository)
 
     @Test
     fun findAllContacts() {
