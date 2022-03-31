@@ -1,12 +1,9 @@
 package com.mloegel.supload.contact
 
-import kotlinx.coroutines.reactive.awaitFirst
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.MediaType
 import org.springframework.http.codec.multipart.FilePart
 import org.springframework.web.bind.annotation.*
-import reactor.core.publisher.Flux
-import java.io.ByteArrayOutputStream
 
 @RestController
 class ContactController(private val contactService: ContactService) {
@@ -48,7 +45,7 @@ class ContactController(private val contactService: ContactService) {
     suspend fun uploadContact(@RequestPart("contact") contact: FilePart) {
 //        val contactFlow = contact.asFlow().filterIsInstance<FilePart>()
 //        contactService.uploadContact(contactFlow.map { it.toBytes() })
-        contactService.uploadContact(contact.toBytes())
+        contactService.uploadContact(contact.content())
     }
 
     @DeleteMapping("/contact/{contactid}")
@@ -61,14 +58,14 @@ class ContactController(private val contactService: ContactService) {
         }
     }
 
-    suspend fun FilePart.toBytes(): ByteArray {
-        val byteStream = ByteArrayOutputStream()
-        this.content()
-            .flatMap { Flux.just(it.asByteBuffer().array()) }
-            .collectList()
-            .awaitFirst()
-            .forEach { byteStream.write(it) }
-
-        return byteStream.toByteArray()
-    }
+//    suspend fun FilePart.toBytes(): ByteArray {
+//        val byteStream = ByteArrayOutputStream()
+//        this.content()
+//            .flatMap { Flux.just(it.asByteBuffer().array()) }
+//            .collectList()
+//            .awaitFirst()
+//            .forEach { byteStream.write(it) }
+//
+//        return byteStream.toByteArray()
+//    }
 }

@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.scheduler.Schedulers
-import java.io.ByteArrayInputStream
 import java.io.InputStream
 import java.io.PipedInputStream
 import java.io.PipedOutputStream
@@ -53,8 +52,9 @@ class ContactService(
         db.save(contact)
     }
 
-    suspend fun uploadContact(contact: ByteArray) {
-        val inputStream = ByteArrayInputStream(contact)
+    //    suspend fun uploadContact(contact: ByteArray) {
+    suspend fun uploadContact(contact: Flux<DataBuffer>) {
+        val inputStream = getInputStreamFromFluxDataBuffer(contact)
         contactUploadParser.load(inputStream)
     }
 
