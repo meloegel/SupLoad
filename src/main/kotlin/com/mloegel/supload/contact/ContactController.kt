@@ -47,7 +47,11 @@ class ContactController(private val contactService: ContactService) {
     }
 
     @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
-    suspend fun uploadContact(@RequestPart("contact") contact: Flux<FilePart>) {
+    suspend fun uploadContact(
+        @RequestPart("foo") foo: String,
+        @RequestPart("bar") contact: Flux<FilePart>,
+//        @RequestBody contact: Flux<FilePart>
+    ) {
 //        val contactFlow = contact.asFlow().filterIsInstance<FilePart>()
         contactService.uploadContact(contact.asFlow().map { it.toBytes() })
 //        contactService.uploadContact(contact.content())
