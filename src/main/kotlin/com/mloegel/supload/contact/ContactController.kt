@@ -1,12 +1,11 @@
 package com.mloegel.supload.contact
 
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirst
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.MediaType
-import org.springframework.http.codec.multipart.FilePart
+import org.springframework.http.ResponseEntity
+import org.springframework.http.codec.multipart.Part
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 
@@ -46,15 +45,22 @@ class ContactController(private val contactService: ContactService) {
         contactService.postContact(updatedContactCopy)
     }
 
+//    @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+//    suspend fun uploadContact(
+//        @RequestPart("foo") foo: String,
+//        @RequestPart("bar") contact: Flux<FilePart>,
+//    ) {
+//        contactService.uploadContact(contact.asFlow().map { it.toBytes() })
+//    }
+
     @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     suspend fun uploadContact(
         @RequestPart("foo") foo: String,
-        @RequestPart("bar") contact: Flux<FilePart>,
-//        @RequestBody contact: Flux<FilePart>
-    ) {
-//        val contactFlow = contact.asFlow().filterIsInstance<FilePart>()
-        contactService.uploadContact(contact.asFlow().map { it.toBytes() })
-//        contactService.uploadContact(contact.content())
+        @RequestPart("contact") contact: Part,
+    ): ResponseEntity<Void> {
+        contactService.uploadContact(contact.toBytes())
+        return ResponseEntity.accepted().build()
+
     }
 
     @DeleteMapping("/contact/{contactid}")
@@ -67,7 +73,18 @@ class ContactController(private val contactService: ContactService) {
         }
     }
 
-    suspend fun FilePart.toBytes(): ByteArray {
+//    suspend fun FilePart.toBytes(): ByteArray {
+//        val byteStream = ByteArrayOutputStream()
+//        this.content()
+//            .flatMap { Flux.just(it.asByteBuffer().array()) }
+//            .collectList()
+//            .awaitFirst()
+//            .forEach { byteStream.write(it) }
+//
+//        return byteStream.toByteArray()
+//    }
+
+    suspend fun Part.toBytes(): ByteArray {
         val byteStream = ByteArrayOutputStream()
         this.content()
             .flatMap { Flux.just(it.asByteBuffer().array()) }

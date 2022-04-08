@@ -2,8 +2,6 @@ package com.mloegel.supload.contact
 
 import com.mloegel.supload.contact.pdf.ContactUploadParser
 import com.mloegel.supload.contact.pdf.PdfGenerator
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -48,12 +46,19 @@ class ContactService(
         db.save(contact)
     }
 
-    suspend fun uploadContact(contact: Flow<ByteArray>) {
+
 //    suspend fun uploadContact(contact: Flux<DataBuffer>) {
 //        val inputStream = getInputStreamFromFluxDataBuffer(contact)
 //        contactUploadParser.load(inputStream)
-        contact.collect { contactUploadParser.load(ByteArrayInputStream(it)) }
 //        contactUploadParser.load(contact)
+//    }
+
+//    suspend fun uploadContact(contact: Flow<ByteArray>) {
+//        contact.collect { contactUploadParser.load(ByteArrayInputStream(it)) }
+//    }
+
+    suspend fun uploadContact(contact: ByteArray) {
+        contactUploadParser.load(ByteArrayInputStream(contact))
     }
 
     @Transactional
