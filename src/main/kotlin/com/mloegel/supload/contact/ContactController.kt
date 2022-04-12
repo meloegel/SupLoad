@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import com.mloegel.supload.user.UserService
 import kotlinx.coroutines.reactive.awaitFirst
 import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream
 import org.springframework.dao.EmptyResultDataAccessException
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 
 @RestController
-class ContactController(private val contactService: ContactService) {
+class ContactController(private val contactService: ContactService, private val userService: UserService) {
     @GetMapping("/contacts")
     fun getAllContacts(): MutableIterable<Contact> = contactService.findAllContacts()
 
@@ -31,6 +32,12 @@ class ContactController(private val contactService: ContactService) {
     @GetMapping("/contact/last/{lastname}")
     fun searchContactsByLastname(@PathVariable lastname: String): List<Contact> {
         return contactService.searchContactsByLastname(lastname)
+    }
+
+    @GetMapping("/contact/username/{username}")
+    fun findContactByUsername(@PathVariable username: String): Contact {
+        val user = userService.findByUsername(username)
+        return contactService.findContactByUsername(user)
     }
 
     @PostMapping("/contact")

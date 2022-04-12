@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import com.mloegel.supload.user.User
 import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.*
 
@@ -33,4 +34,8 @@ data class Contact(
 
     @Column(nullable = false)
     val zip: Int,
+
+    @ManyToOne
+    @JoinColumn(name = "userid", nullable = false)
+    var user: User? = null
 )

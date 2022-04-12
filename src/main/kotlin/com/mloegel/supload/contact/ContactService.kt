@@ -2,6 +2,7 @@ package com.mloegel.supload.contact
 
 import com.mloegel.supload.contact.pdf.ContactUploadParser
 import com.mloegel.supload.contact.pdf.PdfGenerator
+import com.mloegel.supload.user.User
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -28,6 +29,9 @@ class ContactService(
 
     fun searchContactsByLastname(lastname: String): List<Contact> =
         db.findContactsByLastnameContainingIgnoreCase(lastname)
+
+    fun findContactByUsername(user: User) =
+        db.findContactByUser(user)
 
     @Transactional
     fun postContactAndCreatePdf(contact: Contact) {

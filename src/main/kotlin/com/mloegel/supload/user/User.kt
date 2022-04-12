@@ -1,5 +1,7 @@
 package com.mloegel.supload.user
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
+import com.mloegel.supload.contact.Contact
 import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.*
 
@@ -17,6 +19,9 @@ data class User(
     val password: String,
 
     @Column(nullable = false, unique = true)
-    val email: String
+    val email: String,
 
+    @OneToOne(mappedBy = "user", cascade = [CascadeType.ALL], orphanRemoval = true)
+    @JsonIgnoreProperties(value = ["user"], allowSetters = true)
+    var contact: Contact? = null
 )
