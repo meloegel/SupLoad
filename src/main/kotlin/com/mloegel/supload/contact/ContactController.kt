@@ -7,6 +7,8 @@ import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.http.codec.multipart.Part
+import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Flux
 
@@ -40,12 +42,15 @@ class ContactController(private val contactService: ContactService, private val 
         return contactService.findContactByUsername(user)
     }
 
+    @Transactional
     @PostMapping("/contact")
     fun postContact(@RequestBody contact: Contact) = contactService.postContact(contact)
 
+    @Transactional
     @PostMapping("/contact/pdf")
     fun postContactAndCreatePdf(@RequestBody contact: Contact) = contactService.postContactAndCreatePdf(contact)
 
+    @Transactional
     @PutMapping("/contact/{contactid}")
     fun updateContact(@PathVariable contactid: Int, @RequestBody updatedContact: Contact) {
         val updatedContactCopy = updatedContact.copy(contactid = contactid)
@@ -60,6 +65,7 @@ class ContactController(private val contactService: ContactService, private val 
 //        contactService.uploadContact(contact.asFlow().map { it.toBytes() })
 //    }
 
+    @Transactional
     @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     suspend fun uploadContact(
         @RequestPart("foo") foo: String,
@@ -70,6 +76,7 @@ class ContactController(private val contactService: ContactService, private val 
 
     }
 
+    @Transactional
     @DeleteMapping("/contact/{contactid}")
     fun deleteContact(@PathVariable contactid: Int) {
         try {
@@ -79,6 +86,9 @@ class ContactController(private val contactService: ContactService, private val 
             throw Exception("contact with id $contactid not found!")
         }
     }
+
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    fun deleteAll() = contactService.deleteAll()
 
 //    suspend fun FilePart.toBytes(): ByteArray {
 //        val byteStream = ByteArrayOutputStream()
