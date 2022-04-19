@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import com.mloegel.supload.user.User
 import com.nhaarman.mockitokotlin2.whenever
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -17,9 +18,11 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
 
     private val contactList = mutableListOf<Contact>()
 
+    private val user = User(50, "testUsername", "test", "test@email.com")
+
     private val contact = Contact(
         1, "John", "Test", "test@email.com",
-        "123 main st", "test", "test", "555-555-5555", 55555
+        "123 main st", "test", "test", "555-555-5555", 55555, user
     )
 
 
@@ -65,6 +68,15 @@ internal class ContactControllerTest(@Autowired private val webClient: WebTestCl
             .thenReturn(contactList)
         webClient.get()
             .uri("/contact/last/test")
+            .exchange()
+            .expectStatus().isOk
+    }
+
+    @Test
+    fun findContactByUsername() {
+        whenever(mockContactService.findContactByUsername(user)).thenReturn(contact)
+        webClient.get()
+            .uri("/contact/testUsername")
             .exchange()
             .expectStatus().isOk
     }
