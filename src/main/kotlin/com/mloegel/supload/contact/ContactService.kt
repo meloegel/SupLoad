@@ -3,6 +3,8 @@ package com.mloegel.supload.contact
 import com.mloegel.supload.contact.pdf.ContactUploadParser
 import com.mloegel.supload.contact.pdf.PdfGenerator
 import com.mloegel.supload.user.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
@@ -50,19 +52,8 @@ class ContactService(
         db.save(contact)
     }
 
-
-//    suspend fun uploadContact(contact: Flux<DataBuffer>) {
-//        val inputStream = getInputStreamFromFluxDataBuffer(contact)
-//        contactUploadParser.load(inputStream)
-//        contactUploadParser.load(contact)
-//    }
-
-//    suspend fun uploadContact(contact: Flow<ByteArray>) {
-//        contact.collect { contactUploadParser.load(ByteArrayInputStream(it)) }
-//    }
-
-    suspend fun uploadContact(contact: ByteArray) {
-        contactUploadParser.load(ByteArrayInputStream(contact))
+    suspend fun uploadContact(contact: Flow<ByteArray>) {
+        contactUploadParser.load(ByteArrayInputStream(contact.first()))
     }
 
     @Transactional
@@ -70,14 +61,4 @@ class ContactService(
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     fun deleteAll() = db.deleteAll()
-
-//    private suspend fun getInputStreamFromFluxDataBuffer(data: Flux<DataBuffer>): InputStream {
-//        val osPipe = PipedOutputStream()
-//        val isPipe = PipedInputStream(osPipe)
-//        DataBufferUtils.write(data, osPipe)
-//            .subscribeOn(Schedulers.boundedElastic())
-//            .doOnComplete { osPipe.close() }
-//            .subscribe(DataBufferUtils.releaseConsumer())
-//        return isPipe
-//    }
 }
