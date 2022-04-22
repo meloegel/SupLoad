@@ -15,6 +15,7 @@ import reactor.core.publisher.Flux
 
 @RestController
 class ContactController(private val contactService: ContactService, private val userService: UserService) {
+
     @GetMapping("/contacts")
     fun getAllContacts(): MutableIterable<Contact> = contactService.findAllContacts()
 
@@ -61,8 +62,8 @@ class ContactController(private val contactService: ContactService, private val 
     @Transactional
     @PostMapping("/upload/contact", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
     suspend fun uploadContact(
-        @RequestPart("foo") foo: String,
-        @RequestPart("bar") contact: Flux<FilePart>,
+//        @RequestPart("foo") foo: String,
+        @RequestPart("contact") contact: Flux<FilePart>,
     ) {
         contactService.uploadContact(contact.asFlow().map { it.toBytes() })
     }
