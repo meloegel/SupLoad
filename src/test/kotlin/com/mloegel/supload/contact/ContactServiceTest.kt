@@ -45,6 +45,13 @@ internal class ContactServiceTest {
         verify(mockRepository).findContactByUser(User(50, "testUsername", "test", "test@email.com"))
     }
 
+    @Test
+    fun postContactAndCreatePdf() {
+    }
+
+    @Test
+    fun uploadContact() {
+    }
 
     @Test
     fun postContact() {
