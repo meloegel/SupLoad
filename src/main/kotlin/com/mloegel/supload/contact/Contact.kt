@@ -1,5 +1,6 @@
 package com.mloegel.supload.contact
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.mloegel.supload.user.User
 import org.springframework.data.relational.core.mapping.Table
 import javax.persistence.*
@@ -37,5 +38,6 @@ data class Contact(
 
     @ManyToOne
     @JoinColumn(name = "userid", nullable = false)
+    @JsonIgnoreProperties(value = ["user"], allowSetters = true)
     var user: User? = null
 )
