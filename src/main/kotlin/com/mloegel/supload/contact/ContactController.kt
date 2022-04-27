@@ -46,7 +46,18 @@ class ContactController(private val contactService: ContactService, private val 
 
     @Transactional
     @PostMapping("/contact")
-    fun postContact(@RequestBody contact: Contact) = contactService.postContact(contact)
+    fun postContact(@RequestBody contact: NewContact, @RequestBody username: String) {
+        val user = userService.findByUsername(username)
+        val contact =
+            Contact(
+                contactid = 0, firstname = contact.firstname,
+                lastname = contact.lastname, email = contact.email,
+                phone = contact.phone, street = contact.street,
+                city = contact.city, state = contact.state,
+                zip = contact.zip, user = user
+            )
+        contactService.postContact(contact)
+    }
 
     @Transactional
     @PostMapping("/contact/pdf")

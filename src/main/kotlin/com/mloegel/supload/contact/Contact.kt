@@ -41,3 +41,29 @@ data class Contact(
     @JsonIgnoreProperties(value = ["user"], allowSetters = true)
     var user: User? = null
 )
+
+data class NewContact(
+    @Column(nullable = false)
+    val firstname: String,
+
+    @Column(nullable = false)
+    val lastname: String,
+
+    @Column(nullable = false, unique = true)
+    val email: String,
+
+    @Column(nullable = false)
+    val phone: String,
+
+    @Column(nullable = false)
+    val street: String,
+
+    @Column(nullable = false)
+    val city: String,
+
+    @Column(nullable = false)
+    val state: String,
+
+    @Column(nullable = false)
+    val zip: Int,
+)
