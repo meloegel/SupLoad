@@ -65,9 +65,21 @@ class ContactController(private val contactService: ContactService, private val 
 
     @Transactional
     @PutMapping("/contact/{contactid}")
-    fun updateContact(@PathVariable contactid: Int, @RequestBody updatedContact: Contact) {
-        val updatedContactCopy = updatedContact.copy(contactid = contactid)
-        contactService.postContact(updatedContactCopy)
+    fun updateContact(
+        @PathVariable contactid: Int,
+        @RequestBody updatedContact: Contact,
+        @RequestBody username: String
+    ) {
+        val user = userService.findByUsername(username)
+        val updatedContactWithUser =
+            Contact(
+                contactid = contactid, firstname = updatedContact.firstname,
+                lastname = updatedContact.lastname, email = updatedContact.email,
+                phone = updatedContact.phone, street = updatedContact.street,
+                city = updatedContact.city, state = updatedContact.state,
+                zip = updatedContact.zip, user = user
+            )
+        contactService.postContact(updatedContactWithUser)
     }
 
     @Transactional
