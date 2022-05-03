@@ -48,7 +48,7 @@ class ContactController(private val contactService: ContactService, private val 
     @PostMapping("/contact")
     fun postContact(@RequestBody contact: NewContact, @RequestBody username: String) {
         val user = userService.findByUsername(username)
-        val contact =
+        val contactWithUser =
             Contact(
                 contactid = 0, firstname = contact.firstname,
                 lastname = contact.lastname, email = contact.email,
@@ -56,7 +56,7 @@ class ContactController(private val contactService: ContactService, private val 
                 city = contact.city, state = contact.state,
                 zip = contact.zip, user = user
             )
-        contactService.postContact(contact)
+        contactService.postContact(contactWithUser)
     }
 
     @Transactional
